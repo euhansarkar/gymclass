@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  username  String   @unique
+  email     String   @unique
+  password  String
+  role      Role
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  admin     Admin?
+  trainer   Trainer?
+  trainee   Trainee?
+}
+
+model Admin {
+  id     String @id @default(uuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+
+model Trainer {
+  id             String   @id @default(uuid())
+  userId         String   @unique
+  specialization String?
+  user           User     @relation(fields: [userId], references: [id])
+  schedules      Schedule[]
+}
+
+model Trainee {
+  id       String    @id @default(uuid())
+  userId   String    @unique
+  user     User      @relation(fields: [userId], references: [id])
+  bookings Booking[]
+}
+
+model Schedule {
+  id          String   @id @default(uuid())
+  date        DateTime
+  startTime   DateTime
+  endTime     DateTime
+  trainerId   String
+  maxTrainees Int      @default(10)
+  trainer     Trainer  @relation(fields: [trainerId], references: [id])
+  bookings    Booking[]
+}
+
+model Booking {
+  id         String   @id @default(uuid())
+  scheduleId String
+  traineeId  String
+  createdAt  DateTime @default(now())
+  schedule   Schedule @relation(fields: [scheduleId], references: [id])
+  trainee    Trainee  @relation(fields: [traineeId], references: [id])
+}
+
+enum Role {
+  ADMIN 
+  TRAINER 
+  TRAINEE
+}
