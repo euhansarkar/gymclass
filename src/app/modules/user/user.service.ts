@@ -5,6 +5,7 @@ import config from '../../../config';
 import { Admin, Trainee, Trainer, User } from '@prisma/client';
 import { ENUM_USER_ROLE } from '../../../enums/user';
 import { JwtPayload } from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
 const createAdmin = async (
   adminData: Admin,
@@ -16,6 +17,8 @@ const createAdmin = async (
     if (!userData.password) {
       userData.password = config.default_admin_pass as string;
     }
+
+    userData.password = await hashPassword(userData.password);
 
     const userCreation = await transactionClient.user.create({
       data: userData,
@@ -70,6 +73,7 @@ const createTrainer = async (
       userData.password = config.default_trainer_pass as string;
     }
 
+    userData.password = await hashPassword(userData.password);
     const userCreation = await transactionClient.user.create({
       data: userData,
     });
@@ -106,6 +110,8 @@ const createTrainee = async (
       userData.password = config.default_trainee_pass as string;
     }
 
+
+    userData.password = await hashPassword(userData.password);
    
     const userCreation = await transactionClient.user.create({
       data: userData,
@@ -179,6 +185,14 @@ const getMe = async (
   }
 
   return result;
+};
+
+const hashPassword = async (password: string): Promise<string> => { 
+  const hashedPassword = await bcrypt.hash(
+    password,
+    Number(config?.bycrypt_salt_rounds!),
+  );
+  return hashedPassword;
 };
 
 

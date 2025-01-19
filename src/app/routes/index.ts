@@ -3,6 +3,7 @@ import { ScheduleRouter } from '../modules/schedule/schedule.router';
 import { BookingRouter } from '../modules/booking/booking.router';
 import { AdminRouter } from '../modules/admin/admin.router';
 import { UserRouter } from '../modules/user/user.route';
+import { AuthRouter } from '../modules/auth/auth.router';
 
 
 const router = express.Router();
@@ -11,6 +12,10 @@ const moduleRoutes = [
   {
     path: '/users',
     route: UserRouter,
+  },
+  {
+    path: '/auth',
+    route: AuthRouter,
   },
   {
     path: '/schedules',
