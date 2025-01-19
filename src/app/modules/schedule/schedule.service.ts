@@ -6,6 +6,8 @@ import prisma from "../../../shared/prisma";
 import { IScheduleFilterRequest } from "./schedule.interface";
 import { ScheduleRelationalFields, ScheduleRelationalFieldsMapper, ScheduleSearchableFields } from "./schedule.constant";
 import { SearchingFilteringHelper } from "../../../helpers/searchFilterHelper";
+import ApiError from "../../../errors/ApiError";
+import httpStatus from "http-status";
 
 const createOne = async (data: Schedule): Promise<Schedule> => {
     const result = await prisma.schedule.create({
@@ -50,6 +52,7 @@ const getAll = async (
 }
 
 const getOne = async (id: string): Promise<Schedule | null> => {
+
     const result = await prisma.schedule.findUnique({
       where: {
         id,
@@ -58,10 +61,18 @@ const getOne = async (id: string): Promise<Schedule | null> => {
           bookings: true 
       },
     });
+
+    if (!result) {
+        throw new ApiError(httpStatus.NOT_FOUND, "schedule not found");
+    }
+
     return result;
 };
 
 const updateOne = async (id: string, payload: Partial<Schedule>): Promise<Schedule> => {
+
+    const isExists = await getOne(id);
+
     const result = await prisma.schedule.update({
         where: {
             id
@@ -72,6 +83,9 @@ const updateOne = async (id: string, payload: Partial<Schedule>): Promise<Schedu
 };
 
 const deleteOne = async (id: string): Promise<Schedule> => {
+
+    const isExists = await getOne(id);2
+
     const result = await prisma.schedule.delete({
         where: {
             id

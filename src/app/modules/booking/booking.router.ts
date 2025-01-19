@@ -8,7 +8,7 @@ const router = express.Router();
 router
     .route(`/`)
     .post(
-        validateRequest(BookingValidation.create),
+        // validateRequest(BookingValidation.create),
         BookingController.createOne
     )
     .get(BookingController.getAll);
@@ -17,7 +17,7 @@ router
     .route(`/:id`)
     .get(BookingController.getOne)
     .patch(
-        validateRequest(BookingValidation.update),
+        // validateRequest(BookingValidation.update),
         BookingController.updateOne)
     .delete(BookingController.deleteOne);
 

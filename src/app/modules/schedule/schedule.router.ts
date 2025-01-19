@@ -8,7 +8,7 @@ const router = express.Router();
 router
     .route(`/`)
     .post(
-        validateRequest(ScheduleValidation.create),
+        // validateRequest(ScheduleValidation.create),
         ScheduleController.createOne
     )
     .get(ScheduleController.getAll);
@@ -17,7 +17,7 @@ router
     .route(`/:id`)
     .get(ScheduleController.getOne)
     .patch(
-        validateRequest(ScheduleValidation.update),
+        // validateRequest(ScheduleValidation.update),
         ScheduleController.updateOne)
     .delete(ScheduleController.deleteOne);
 

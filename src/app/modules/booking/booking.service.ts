@@ -6,6 +6,8 @@ import prisma from "../../../shared/prisma";
 import { IBookingFilterRequest } from "./booking.interface";
 import { BookingRelationalFields, BookingRelationalFieldsMapper, BookingSearchableFields } from "./booking.constant";
 import { SearchingFilteringHelper } from "../../../helpers/searchFilterHelper";
+import ApiError from "../../../errors/ApiError";
+import httpStatus from "http-status";
 
 const createOne = async (data: Booking): Promise<Booking> => {
     const result = await prisma.booking.create({
@@ -56,10 +58,18 @@ const getOne = async (id: string): Promise<Booking | null> => {
       include: {
       },
     });
+
+    if (!result) {
+        throw new ApiError(httpStatus.NOT_FOUND, "booking not found");
+    }
+
     return result;
 };
 
 const updateOne = async (id: string, payload: Partial<Booking>): Promise<Booking> => {
+
+    const isExists = await getOne(id);
+
     const result = await prisma.booking.update({
         where: {
             id
@@ -70,6 +80,9 @@ const updateOne = async (id: string, payload: Partial<Booking>): Promise<Booking
 };
 
 const deleteOne = async (id: string): Promise<Booking> => {
+
+    const isExists = await getOne(id);
+
     const result = await prisma.booking.delete({
         where: {
             id

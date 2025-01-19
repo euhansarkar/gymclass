@@ -50,11 +50,11 @@ model Trainee {
 
 model Schedule {
   id          String    @id @default(uuid())
-  date        DateTime
+  title       String    @unique
   startTime   DateTime
   endTime     DateTime
   trainerId   String
-  maxTrainees Int       @default(0)
+  maxTrainees Int       @default(10)
   trainer     Trainer   @relation(fields: [trainerId], references: [id])
   bookings    Booking[]
   createdAt   DateTime  @default(now())
