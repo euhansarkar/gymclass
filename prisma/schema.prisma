@@ -49,7 +49,7 @@ model Schedule {
   startTime   DateTime
   endTime     DateTime
   trainerId   String
-  maxTrainees Int      @default(10)
+  maxTrainees Int      @default(0)
   trainer     Trainer  @relation(fields: [trainerId], references: [id])
   bookings    Booking[]
 }
