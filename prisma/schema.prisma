@@ -16,55 +16,63 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  admin     Admin?
-  trainer   Trainer?
-  trainee   Trainee?
+  admin   Admin?
+  trainer Trainer?
+  trainee Trainee?
 }
 
 model Admin {
-  id     String @id @default(uuid())
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id])
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-
 model Trainer {
-  id             String   @id @default(uuid())
-  userId         String   @unique
+  id             String     @id @default(uuid())
+  userId         String     @unique
   specialization String?
-  user           User     @relation(fields: [userId], references: [id])
+  user           User       @relation(fields: [userId], references: [id])
   schedules      Schedule[]
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
 }
 
 model Trainee {
-  id       String    @id @default(uuid())
-  userId   String    @unique
-  user     User      @relation(fields: [userId], references: [id])
-  bookings Booking[]
+  id        String    @id @default(uuid())
+  userId    String    @unique
+  user      User      @relation(fields: [userId], references: [id])
+  bookings  Booking[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model Schedule {
-  id          String   @id @default(uuid())
+  id          String    @id @default(uuid())
   date        DateTime
   startTime   DateTime
   endTime     DateTime
   trainerId   String
-  maxTrainees Int      @default(0)
-  trainer     Trainer  @relation(fields: [trainerId], references: [id])
+  maxTrainees Int       @default(0)
+  trainer     Trainer   @relation(fields: [trainerId], references: [id])
   bookings    Booking[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 model Booking {
   id         String   @id @default(uuid())
   scheduleId String
   traineeId  String
-  createdAt  DateTime @default(now())
   schedule   Schedule @relation(fields: [scheduleId], references: [id])
   trainee    Trainee  @relation(fields: [traineeId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 enum Role {
-  ADMIN 
-  TRAINER 
+  ADMIN
+  TRAINER
   TRAINEE
 }
