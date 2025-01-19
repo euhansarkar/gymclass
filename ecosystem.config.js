@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'dua-server',
+      name: 'gymclass',
       script: './dist/server.js',
       args: 'start',
       env: {

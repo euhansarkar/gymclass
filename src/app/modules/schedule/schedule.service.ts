@@ -10,11 +10,35 @@ import ApiError from "../../../errors/ApiError";
 import httpStatus from "http-status";
 
 const createOne = async (data: Schedule): Promise<Schedule> => {
-    const result = await prisma.schedule.create({
-        data
-    })
-    return result;
-}
+
+  const startOfDay = new Date(data.startTime);
+  startOfDay.setHours(0, 0, 0, 0);
+
+  const endOfDay = new Date(data.startTime);
+  endOfDay.setHours(23, 59, 59, 999);
+
+  const scheduleCount = await prisma.schedule.count({
+    where: {
+      startTime: {
+        gte: startOfDay,
+        lte: endOfDay,
+      },
+    },
+  });
+
+  if (scheduleCount >= 5) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      `Only 5 Class Schedules are allowed per day.`,
+    );
+  }
+
+  const result = await prisma.schedule.create({
+    data,
+  });
+
+  return result;
+};
 
 const getAll = async (
     filters: IScheduleFilterRequest,
@@ -74,22 +98,22 @@ const updateOne = async (id: string, payload: Partial<Schedule>): Promise<Schedu
     const isExists = await getOne(id);
 
     const result = await prisma.schedule.update({
-        where: {
-            id
-        },
-        data: payload
+      where: {
+        id: isExists?.id,
+      },
+      data: payload,
     });
     return result;
 };
 
 const deleteOne = async (id: string): Promise<Schedule> => {
 
-    const isExists = await getOne(id);2
+    const isExists = await getOne(id);
 
     const result = await prisma.schedule.delete({
-        where: {
-            id
-        }
+      where: {
+        id: isExists?.id 
+      },
     });
     return result;
 };

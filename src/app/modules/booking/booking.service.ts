@@ -8,8 +8,33 @@ import { BookingRelationalFields, BookingRelationalFieldsMapper, BookingSearchab
 import { SearchingFilteringHelper } from "../../../helpers/searchFilterHelper";
 import ApiError from "../../../errors/ApiError";
 import httpStatus from "http-status";
+import { ScheduleService } from "../schedule/schedule.service";
 
 const createOne = async (data: Booking): Promise<Booking> => {
+
+    const isScheduleExists = await ScheduleService.getOne(data?.scheduleId);
+
+    if (!isScheduleExists) {
+        throw new ApiError(httpStatus.NOT_FOUND, "schedule not found");
+    }
+
+    const isUserExistsInThisSchedule = await prisma.booking.findFirst({ where: { scheduleId: isScheduleExists?.id, traineeId: data?.traineeId } });
+
+    if (isUserExistsInThisSchedule) {
+        throw new ApiError(httpStatus.CONFLICT, "Yo've Already Booked The Schedule");
+    }
+
+    const total = await prisma.booking.count({
+        where: {scheduleId: isScheduleExists.id, isCancelled: false },
+    });
+
+    if (total >= 10) {
+        throw new ApiError(
+          httpStatus.EXPECTATION_FAILED,
+          'Class schedule is full. Maximum 10 trainees allowed per schedule.',
+        );
+    }
+
     const result = await prisma.booking.create({
         data
     })
@@ -71,10 +96,10 @@ const updateOne = async (id: string, payload: Partial<Booking>): Promise<Booking
     const isExists = await getOne(id);
 
     const result = await prisma.booking.update({
-        where: {
-            id
-        },
-        data: payload
+      where: {
+        id: isExists?.id
+      },
+      data: payload,
     });
     return result;
 };
@@ -84,9 +109,9 @@ const deleteOne = async (id: string): Promise<Booking> => {
     const isExists = await getOne(id);
 
     const result = await prisma.booking.delete({
-        where: {
-            id
-        }
+      where: {
+        id: isExists?.id
+      },
     });
     return result;
 };

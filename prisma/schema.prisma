@@ -67,6 +67,7 @@ model Booking {
   traineeId  String
   schedule   Schedule @relation(fields: [scheduleId], references: [id])
   trainee    Trainee  @relation(fields: [traineeId], references: [id])
+  isCancelled Boolean @default(false)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }
