@@ -1,70 +1,79 @@
-# dua-server
+# Training Management System
 
-A Prisma-based server for managing data with SQLite.
+## Project Overview
+The **Training Management System** is designed to streamline the management of trainers, trainees, and training schedules. It facilitates creating and managing users (admins, trainers, and trainees), schedules, bookings, and other related operations. The system ensures smooth operations with features like schedule management, user authentication, and role-based access control.
 
-## Getting Started
+---
 
-Follow these steps to set up and run the project locally:
+## Relation Diagram
+Below is the relational diagram for the backend system.
 
-### Prerequisites
+![Relational Diagram](https://link-to-your-diagram.com/diagram.png)
 
-Ensure you have the following installed:
+---
 
-- [Node.js](https://nodejs.org/) (v16 or higher recommended)
-- [pnpm](https://pnpm.io/) (Package Manager)
-  - If `pnpm` is not installed, install it using:
-    ```bash
-    npm i -g pnpm
-    ```
+## Technology Stack
+The project leverages the following technologies:
+- **Backend**: TypeScript, Express.js, Prisma ORM
+- **Database**: PostgreSQL
+- **Authentication**: JSON Web Token (JWT)
+- **Validation**: Zod
+- **Hosting**: [Your hosting platform, e.g., Vercel, AWS, etc.]
 
-### Installation
+---
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/euhansarkar/dua-server
-   ```
+## API Endpoints
+### Auth Routes
+- `POST /api/auth/login`  
+  **Request**: `{ email, password }`  
+  **Response**: `{ token, user }`
+- `POST /api/auth/register`  
+  **Request**: `{ username, email, password, role }`  
+  **Response**: `{ message }`
 
-2. **Navigate to the project directory:**
-   ```bash
-   cd dua-server
-   ```
+### User Routes
+- `GET /api/users/:id`  
+  **Response**: `{ user }`
+- `PUT /api/users/:id`  
+  **Request**: `{ username, email }`  
+  **Response**: `{ updatedUser }`
 
-3. **Install dependencies:**
-   ```bash
-   pnpm i
-   ```
+### Trainer Routes
+- `POST /api/trainers`  
+  **Request**: `{ username, email, password, specialization }`  
+  **Response**: `{ message }`
 
-### Configuration
+### Trainee Routes
+- `POST /api/trainees`  
+  **Request**: `{ username, email, password }`  
+  **Response**: `{ message }`
 
-1. **Set up environment variables:**
-   Create a `.env` file in the root directory and add the following:
-   ```env
-   NODE_ENV=development
-   PORT=5000
-   DATABASE_URL="file:./dua_main.sqlite"
-   ```
+### Schedule Routes
+- `POST /api/schedules`  
+  **Request**: `{ title, startTime, endTime, trainerId, maxTrainees }`  
+  **Response**: `{ message }`
 
-2. **Generate Prisma client:**
-   ```bash
-   pnpm prisma generate
-   ```
+### Booking Routes
+- `POST /api/bookings`  
+  **Request**: `{ scheduleId, traineeId }`  
+  **Response**: `{ message }`
+- `PUT /api/bookings/:id/cancel`  
+  **Response**: `{ message }`
 
-### Running the Server
+---
 
-1. **Start the development server:**
-   ```bash
-   pnpm dev
-   ```
-
-The server will run on `http://localhost:5000` by default.
-
-## Additional Notes
-
-- Ensure your `DATABASE_URL` in the `.env` file points to the correct SQLite file.
-- Use `pnpm prisma generate` whenever you make changes to the Prisma schema.
-
-## Scripts
-
-- `pnpm i`: Installs dependencies.
-- `pnpm prisma generate`: Generates the Prisma client.
-- `pnpm dev`: Starts the development server.
+## Database Schema
+### User Model
+```prisma
+model User {
+  id        String   @id @default(uuid())
+  username  String   @unique
+  email     String   @unique
+  password  String
+  role      Role
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  admin     Admin?
+  trainer   Trainer?
+  trainee   Trainee?
+}
