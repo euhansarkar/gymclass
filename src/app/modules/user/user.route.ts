@@ -15,6 +15,17 @@ router
   );
 
 
+router.route(`/create-trainer`).post(
+  // validateRequest(UserValidation.createAdminZodSchema),
+  UserController.createTrainer,
+);
+
+
+router.route(`/create-trainee`).post(
+  // validateRequest(UserValidation.createAdminZodSchema),
+  UserController.createTrainee
+);
+
   
 router
   .route(`/get-me`)

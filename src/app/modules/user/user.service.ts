@@ -58,6 +58,83 @@ const getOne = async (id: string): Promise<User | null> => {
   return result;
 };
 
+
+const createTrainer = async (
+  trainerData: Trainer,
+  userData: User,
+): Promise<{ message: string }> => {
+  await prisma.$transaction(async transactionClient => {
+    userData.role = ENUM_USER_ROLE.TRAINER;
+
+    if (!userData.password) {
+      userData.password = config.default_trainer_pass as string;
+    }
+
+    const userCreation = await transactionClient.user.create({
+      data: userData,
+    });
+
+    if (!userCreation) {
+      throw new ApiError(httpStatus.BAD_REQUEST, `Failed to create User`);
+    }
+
+    const trainerCreation = await transactionClient.trainer.create({
+      data: {
+        ...trainerData,
+        userId: userCreation.id,
+      },
+    });
+
+    if (!trainerCreation) {
+      throw new ApiError(httpStatus.BAD_REQUEST, `Failed to create Trainer`);
+    }
+  });
+
+  return { message: `Trainer created successfully` };
+};
+
+
+const createTrainee = async (
+  traineeData: Trainee,
+  userData: User,
+): Promise<{ message: string }> => {
+  await prisma.$transaction(async transactionClient => {
+   
+    userData.role = ENUM_USER_ROLE.TRAINEE;
+
+    if (!userData.password) {
+      userData.password = config.default_trainee_pass as string;
+    }
+
+   
+    const userCreation = await transactionClient.user.create({
+      data: userData,
+      include: { trainee: true },
+    });
+
+    if (!userCreation) {
+      throw new ApiError(httpStatus.BAD_REQUEST, `Failed to create User`);
+    }
+
+   
+    traineeData.userId = userCreation?.id;
+
+   
+    const traineeCreation = await transactionClient.trainee.create({
+      data: traineeData,
+    });
+
+    if (!traineeCreation) {
+      throw new ApiError(httpStatus.BAD_REQUEST, `Failed to create Trainee`);
+    }
+  });
+
+  return { message: `Trainee created successfully` };
+};
+
+
+
+
 const getMe = async (
   user: JwtPayload | null,
 ): Promise<Admin | Trainer | Trainee | null> => {
@@ -105,4 +182,4 @@ const getMe = async (
 };
 
 
-export const UserService = { createAdmin, getOne, getMe }; 
+export const UserService = { createAdmin, createTrainer, createTrainee, getOne, getMe }; 

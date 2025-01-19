@@ -18,6 +18,32 @@ const createAdmin = catchAsync(async (req, res) => {
 });
 
 
+const createTrainer = catchAsync(async (req, res) => {
+  const { trainer, ...trainerData } = req.body;
+
+  const result = await UserService.createTrainer(trainer, trainerData);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: `trainer created`,
+    data: result,
+  });
+});
+
+
+const createTrainee = catchAsync(async (req, res) => {
+  const { trainee, ...traineeData } = req.body;
+
+  const result = await UserService.createTrainee(trainee, traineeData);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: `trainee created`,
+    data: result,
+  });
+});
 
 const getOne = catchAsync(async (req, res) => {
   const { id } = req.params;
@@ -44,4 +70,4 @@ const getMe = catchAsync(async (req, res) => {
   });
 });
 
-export const UserController = { createAdmin, getOne, getMe };
+export const UserController = { createAdmin, createTrainer, createTrainee, getOne, getMe };
