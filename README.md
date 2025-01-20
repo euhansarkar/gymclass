@@ -1,4 +1,4 @@
-# Training Management System
+# GYM Training Management System
 
 ## Project Overview
 The **Training Management System** is designed to streamline the management of trainers, trainees, and training schedules. It facilitates creating and managing users (admins, trainers, and trainees), schedules, bookings, and other related operations. The system ensures smooth operations with features like schedule management, user authentication, and role-based access control.
@@ -8,7 +8,7 @@ The **Training Management System** is designed to streamline the management of t
 ## Relation Diagram
 Below is the relational diagram for the backend system.
 
-![Relational Diagram](https://link-to-your-diagram.com/diagram.png)
+![Relational Diagram](https://prismaliser.app?code=Z2VuZXJhdG9yIGNsaWVudCB7CiAgcHJvdmlkZXIgPSAicHJpc21hLWNsaWVudC1qcyIKfQoKZGF0YXNvdXJjZSBkYiB7CiAgcHJvdmlkZXIgPSAicG9zdGdyZXNxbCIKICB1cmwgICAgICA9IGVudigiREFUQUJBU0VfVVJMIikKfQoKbW9kZWwgVXNlciB7CiAgaWQgICAgICAgIFN0cmluZyAgIEBpZCBAZGVmYXVsdCh1dWlkKCkpCiAgdXNlcm5hbWUgIFN0cmluZyAgIEB1bmlxdWUKICBlbWFpbCAgICAgU3RyaW5nICAgQHVuaXF1ZQogIHBhc3N3b3JkICBTdHJpbmcKICByb2xlICAgICAgUm9sZQogIGNyZWF0ZWRBdCBEYXRlVGltZSBAZGVmYXVsdChub3coKSkKICB1cGRhdGVkQXQgRGF0ZVRpbWUgQHVwZGF0ZWRBdAoKICBhZG1pbiAgIEFkbWluPwogIHRyYWluZXIgVHJhaW5lcj8KICB0cmFpbmVlIFRyYWluZWU_Cn0KCm1vZGVsIEFkbWluIHsKICBpZCAgICAgICAgU3RyaW5nICAgQGlkIEBkZWZhdWx0KHV1aWQoKSkKICB1c2VySWQgICAgU3RyaW5nICAgQHVuaXF1ZQogIGxvY2F0aW9uICBTdHJpbmc_CiAgdXNlciAgICAgIFVzZXIgICAgIEByZWxhdGlvbihmaWVsZHM6IFt1c2VySWRdLCByZWZlcmVuY2VzOiBbaWRdKQogIGNyZWF0ZWRBdCBEYXRlVGltZSBAZGVmYXVsdChub3coKSkKICB1cGRhdGVkQXQgRGF0ZVRpbWUgQHVwZGF0ZWRBdAp9Cgptb2RlbCBUcmFpbmVyIHsKICBpZCAgICAgICAgICAgICBTdHJpbmcgICAgIEBpZCBAZGVmYXVsdCh1dWlkKCkpCiAgdXNlcklkICAgICAgICAgU3RyaW5nICAgICBAdW5pcXVlCiAgc3BlY2lhbGl6YXRpb24gU3RyaW5nPwogIGJpbyAgICAgICAgICAgIFN0cmluZz8KICBhZGRyZXNzICAgICAgICBTdHJpbmc_CiAgdXNlciAgICAgICAgICAgVXNlciAgICAgICBAcmVsYXRpb24oZmllbGRzOiBbdXNlcklkXSwgcmVmZXJlbmNlczogW2lkXSkKICBzY2hlZHVsZXMgICAgICBTY2hlZHVsZVtdCiAgY3JlYXRlZEF0ICAgICAgRGF0ZVRpbWUgICBAZGVmYXVsdChub3coKSkKICB1cGRhdGVkQXQgICAgICBEYXRlVGltZSAgIEB1cGRhdGVkQXQKfQoKbW9kZWwgVHJhaW5lZSB7CiAgaWQgICAgICAgIFN0cmluZyAgICBAaWQgQGRlZmF1bHQodXVpZCgpKQogIHVzZXJJZCAgICBTdHJpbmcgICAgQHVuaXF1ZQogIGJpbyAgICAgICBTdHJpbmc_ICAgIAogIGFkZHJlc3MgICBTdHJpbmc_CiAgdXNlciAgICAgIFVzZXIgICAgICBAcmVsYXRpb24oZmllbGRzOiBbdXNlcklkXSwgcmVmZXJlbmNlczogW2lkXSkKICBib29raW5ncyAgQm9va2luZ1tdCiAgY3JlYXRlZEF0IERhdGVUaW1lICBAZGVmYXVsdChub3coKSkKICB1cGRhdGVkQXQgRGF0ZVRpbWUgIEB1cGRhdGVkQXQKfQoKbW9kZWwgU2NoZWR1bGUgewogIGlkICAgICAgICAgIFN0cmluZyAgICBAaWQgQGRlZmF1bHQodXVpZCgpKQogIHRpdGxlICAgICAgIFN0cmluZyAgICBAdW5pcXVlCiAgc3RhcnRUaW1lICAgRGF0ZVRpbWUKICBlbmRUaW1lICAgICBEYXRlVGltZQogIHRyYWluZXJJZCAgIFN0cmluZwogIG1heFRyYWluZWVzIEludCAgICAgICBAZGVmYXVsdCgxMCkKICB0cmFpbmVyICAgICBUcmFpbmVyICAgQHJlbGF0aW9uKGZpZWxkczogW3RyYWluZXJJZF0sIHJlZmVyZW5jZXM6IFtpZF0pCiAgYm9va2luZ3MgICAgQm9va2luZ1tdCiAgY3JlYXRlZEF0ICAgRGF0ZVRpbWUgIEBkZWZhdWx0KG5vdygpKQogIHVwZGF0ZWRBdCAgIERhdGVUaW1lICBAdXBkYXRlZEF0Cn0KCm1vZGVsIEJvb2tpbmcgewogIGlkICAgICAgICAgU3RyaW5nICAgQGlkIEBkZWZhdWx0KHV1aWQoKSkKICBzY2hlZHVsZUlkIFN0cmluZwogIHRyYWluZWVJZCAgU3RyaW5nCiAgc2NoZWR1bGUgICBTY2hlZHVsZSBAcmVsYXRpb24oZmllbGRzOiBbc2NoZWR1bGVJZF0sIHJlZmVyZW5jZXM6IFtpZF0pCiAgdHJhaW5lZSAgICBUcmFpbmVlICBAcmVsYXRpb24oZmllbGRzOiBbdHJhaW5lZUlkXSwgcmVmZXJlbmNlczogW2lkXSkKICBpc0NhbmNlbGxlZCBCb29sZWFuIEBkZWZhdWx0KGZhbHNlKQogIGNyZWF0ZWRBdCAgRGF0ZVRpbWUgQGRlZmF1bHQobm93KCkpCiAgdXBkYXRlZEF0ICBEYXRlVGltZSBAdXBkYXRlZEF0Cn0KCmVudW0gUm9sZSB7CiAgQURNSU4KICBUUkFJTkVSCiAgVFJBSU5FRQp9Cg%3D%3D)
 
 ---
 
@@ -63,17 +63,33 @@ The project leverages the following technologies:
 ---
 
 ## Database Schema
-### User Model
-```prisma
-model User {
-  id        String   @id @default(uuid())
-  username  String   @unique
-  email     String   @unique
-  password  String
-  role      Role
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  admin     Admin?
-  trainer   Trainer?
-  trainee   Trainee?
-}
+
+
+
+## API Endpoints  
+ Here Is My Api Documentation: 
+
+ https://documenter.getpostman.com/view/25533178/2sAYQcEqH1
+
+## Admin Credentials  
+- **Username**: admin@example.com  
+- **Password**: admin123  
+
+## Instructions to Run Locally  
+
+1. **Clone the Repository**  
+   ```bash  
+   git clone https://github.com/yourusername/projectname.git  
+   cd projectname  
+
+2. **set Env Based On .env.example file**
+
+  ```  pnpm i
+       pnpm prisma generate dev
+      pnpm prisma migrate dev
+      pnpm dev
+      
+
+## Live Hosting Link
+
+![Live Link](https://gymclass.hitchmi.com/api/v1/schedules)
