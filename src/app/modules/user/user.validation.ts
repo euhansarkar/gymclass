@@ -1,37 +1,86 @@
 import { z } from 'zod';
 import { gender } from './user.constant';
+import { Role } from '@prisma/client';
 
 
 
-const createAdminZodSchema = z.object({
+const adminCreationZodSchema = z.object({
   body: z.object({
-    password: z.string().refine((value) => {
-      if (!value) {
-        throw new Error('Password is required');
-      }
-      const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d.*\d)(?=.*[!@#$%^&*()_+}{"':;?/>.<,])(?=(.*\d){2})(?=(.*[!@#$%^&*()_+}{"':;?/>.<,]){2})(?!.*\s).*$/;
-      if (!passwordRegex.test(value)) {
-        throw new Error('Password must include 1 capital letter, 1 small letter, 2 numbers, and 2 special characters');
-      }
-      if (value.length < 8) {
-        throw new Error('Password must be at least 8 characters long');
-      }
-      return true;
-    }, { message: 'Invalid password' }),
-    contactNo: z.string({ required_error: "contactNo is required" }),
     admin: z.object({
-      gender: z.enum([...gender] as [string, ...string[]], {
-        required_error: 'Gender is required',
+      location: z.string().optional(),
+    }),
+    username: z
+      .string()
+      .min(6, { message: 'Username must be at least 6 characters long.' })
+      .regex(/^[a-zA-Z0-9]+$/, {
+        message: 'Username can only contain letters and numbers.',
       }),
-      email: z.string().email('Invalid email address'),
-      emergencyContactNo: z
+    email: z.string().email({ message: 'Invalid email address.' }),
+    password: z
+      .string()
+      .min(6, { message: 'Password must be at least 6 characters long.' }),
+  }),
+});
+
+
+const trainerCreationZodSchema = z.object({
+  body: z.object({
+    trainer: z.object({
+      specialization: z
         .string()
-        .min(10, 'Emergency contact number is required'),
-      profileImage: z.string().optional()
+        .nonempty({ message: 'Specialization is required.' }),
+      bio: z.string().optional(),
+      location: z.string().optional(),
+    }),
+    username: z.string().nonempty({ message: 'Username is required.' }),
+    email: z.string().email({ message: 'Invalid email address.' }),
+    password: z
+      .string()
+      .min(8, { message: 'Password must be at least 8 characters long.' }),
+    role: z.enum([Role.TRAINER], {
+      errorMap: () => ({
+        message: 'Role must be one of: Trainer, Admin, User.',
+      }),
     }),
   }),
 });
 
+
+const traineeCreationZodSchema = z.object({
+  body: z.object({
+    trainee: z.object({
+      bio: z.string().optional(),
+      location: z.string().optional(),
+    }),
+    username: z
+      .string()
+      .min(6, { message: 'Username must be at least 6 characters long.' })
+      .regex(/^[a-zA-Z0-9_]+$/, {
+        message: 'Username can only contain letters, numbers, and underscores.',
+      }),
+    email: z.string().email({ message: 'Invalid email address.' }),
+    password: z
+      .string()
+      .min(8, { message: 'Password must be at least 8 characters long.' })
+      .regex(/[A-Z]/, {
+        message: 'Password must contain at least one uppercase letter.',
+      })
+      .regex(/[a-z]/, {
+        message: 'Password must contain at least one lowercase letter.',
+      })
+      .regex(/[0-9]/, { message: 'Password must contain at least one number.' })
+      .regex(/[@$!%*?&#]/, {
+        message: 'Password must contain at least one special character.',
+      }),
+    role: z.enum([Role.TRAINEE], {
+      message: "Role must be one of the following: 'Trainee', 'Admin', 'User'.",
+    }),
+  }),
+});
+
+
 export const UserValidation = {
-  createAdminZodSchema,
+  adminCreationZodSchema,
+  trainerCreationZodSchema,
+  traineeCreationZodSchema,
 };

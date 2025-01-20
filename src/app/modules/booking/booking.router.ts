@@ -11,7 +11,7 @@ router
   .route(`/`)
   .post(
     auth(ENUM_USER_ROLE.TRAINEE),
-    // validateRequest(BookingValidation.create),
+    validateRequest(BookingValidation.create),
     BookingController.createOne,
   )
   .get(BookingController.getAll);
@@ -21,7 +21,7 @@ router
   .get(BookingController.getOne)
   .patch(
     auth(ENUM_USER_ROLE.TRAINEE),
-    // validateRequest(BookingValidation.update),
+    validateRequest(BookingValidation.update),
     BookingController.updateOne,
   )
   .delete(BookingController.deleteOne);

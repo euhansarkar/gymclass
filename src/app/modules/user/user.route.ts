@@ -8,10 +8,10 @@ const router = express.Router();
 
 
 router.route(`/create-admin`).post(
-  // auth(
-  //   ENUM_USER_ROLE.ADMIN,
-  // ),
-  // validateRequest(UserValidation.createAdminZodSchema),
+  auth(
+    ENUM_USER_ROLE.ADMIN,
+  ),
+  validateRequest(UserValidation.adminCreationZodSchema),
   UserController.createAdmin,
 );
 
@@ -20,17 +20,13 @@ router.route(`/create-trainer`).post(
   auth(
     ENUM_USER_ROLE.ADMIN,
   ),
-  // validateRequest(UserValidation.createAdminZodSchema),
+  validateRequest(UserValidation.trainerCreationZodSchema),
   UserController.createTrainer,
 );
 
 
 router.route(`/create-trainee`).post(
-  // auth(
-  //   ENUM_USER_ROLE.ADMIN,
-  //   ENUM_USER_ROLE.TRAINEE
-  // ),
-  // validateRequest(UserValidation.createAdminZodSchema),
+  validateRequest(UserValidation.traineeCreationZodSchema),
   UserController.createTrainee,
 );
 

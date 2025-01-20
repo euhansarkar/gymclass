@@ -4,6 +4,7 @@ import { ScheduleController } from './schedule.controller';
 import { ScheduleValidation } from './schedule.validation';
 import auth from '../../middlewares/auth';
 import { ENUM_USER_ROLE } from '../../../enums/user';
+import textToJSONParser from '../../middlewares/textToJSONParser';
 const router = express.Router();
 
 
@@ -11,7 +12,7 @@ router
   .route(`/`)
   .post(
     auth(ENUM_USER_ROLE.ADMIN),
-    // validateRequest(ScheduleValidation.create),
+    validateRequest(ScheduleValidation.create),
     ScheduleController.createOne,
   )
   .get(ScheduleController.getAll);
@@ -21,7 +22,7 @@ router
   .get(ScheduleController.getOne)
   .patch(
     auth(ENUM_USER_ROLE.ADMIN),
-    // validateRequest(ScheduleValidation.update),
+    validateRequest(ScheduleValidation.update),
     ScheduleController.updateOne,
   )
   .delete(auth(ENUM_USER_ROLE.ADMIN), ScheduleController.deleteOne);
