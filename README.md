@@ -72,6 +72,11 @@ The project leverages the following technologies:
  https://documenter.getpostman.com/view/25533178/2sAYQcEqH1
 
 ## Admin Credentials  
+
+  ## Live Hosting Link
+
+  ### https://gymclass.hitchmi.com/api/v1
+
 - **Username**: admin@example.com  
 - **Password**: admin123  
 
@@ -89,7 +94,3 @@ The project leverages the following technologies:
       pnpm prisma migrate dev
       pnpm dev
       
-
-## Live Hosting Link
-
-![Live Link](https://gymclass.hitchmi.com/api/v1/schedules)
