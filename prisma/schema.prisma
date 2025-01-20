@@ -24,6 +24,7 @@ model User {
 model Admin {
   id        String   @id @default(uuid())
   userId    String   @unique
+  location  String?
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -33,6 +34,8 @@ model Trainer {
   id             String     @id @default(uuid())
   userId         String     @unique
   specialization String?
+  bio            String?
+  address        String?
   user           User       @relation(fields: [userId], references: [id])
   schedules      Schedule[]
   createdAt      DateTime   @default(now())
@@ -42,6 +45,8 @@ model Trainer {
 model Trainee {
   id        String    @id @default(uuid())
   userId    String    @unique
+  bio       String?    
+  address   String?
   user      User      @relation(fields: [userId], references: [id])
   bookings  Booking[]
   createdAt DateTime  @default(now())

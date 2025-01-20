@@ -26,10 +26,10 @@ router.route(`/create-trainer`).post(
 
 
 router.route(`/create-trainee`).post(
-  auth(
-    ENUM_USER_ROLE.ADMIN,
-    ENUM_USER_ROLE.TRAINEE
-  ),
+  // auth(
+  //   ENUM_USER_ROLE.ADMIN,
+  //   ENUM_USER_ROLE.TRAINEE
+  // ),
   // validateRequest(UserValidation.createAdminZodSchema),
   UserController.createTrainee,
 );
