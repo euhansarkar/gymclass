@@ -7,23 +7,31 @@ import auth from '../../middlewares/auth';
 const router = express.Router();
 
 
-router
-  .route(`/create-admin`)
-  .post(
-    // validateRequest(UserValidation.createAdminZodSchema),
-    UserController.createAdmin
-  );
+router.route(`/create-admin`).post(
+  // auth(
+  //   ENUM_USER_ROLE.ADMIN,
+  // ),
+  // validateRequest(UserValidation.createAdminZodSchema),
+  UserController.createAdmin,
+);
 
 
 router.route(`/create-trainer`).post(
+  auth(
+    ENUM_USER_ROLE.ADMIN,
+  ),
   // validateRequest(UserValidation.createAdminZodSchema),
   UserController.createTrainer,
 );
 
 
 router.route(`/create-trainee`).post(
+  auth(
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.TRAINEE
+  ),
   // validateRequest(UserValidation.createAdminZodSchema),
-  UserController.createTrainee
+  UserController.createTrainee,
 );
 
   
